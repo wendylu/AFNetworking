@@ -154,15 +154,19 @@ static NSURLRequest * AFNetworkRequestFromNotification(NSNotification *notificat
 }
 
 - (void)networkRequestDidStart:(NSNotification *)notification {
-    if ([AFNetworkRequestFromNotification(notification) URL]) {
-        [self incrementActivityCount];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([AFNetworkRequestFromNotification(notification) URL]) {
+            [self incrementActivityCount];
+        }
+    });
 }
 
 - (void)networkRequestDidFinish:(NSNotification *)notification {
-    if ([AFNetworkRequestFromNotification(notification) URL]) {
-        [self decrementActivityCount];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([AFNetworkRequestFromNotification(notification) URL]) {
+            [self decrementActivityCount];
+        }
+    });
 }
 
 @end
